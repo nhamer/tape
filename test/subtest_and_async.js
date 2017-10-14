@@ -20,4 +20,6 @@ test('master test', function (t) {
       t.end();
     })
   });
+
+  t.end();
 });
