@@ -51,6 +51,7 @@ tap.test('plan vs end: plan', function (tt) {
     });
 });
 
+// Note that this is in fact ordered differently than plan() - end runs progeny before assertions
 tap.test('plan vs end: end', function (tt) {
     tt.plan(1);
     
@@ -59,11 +60,11 @@ tap.test('plan vs end: end', function (tt) {
         tt.same(rows.toString('utf8'), [
             'TAP version 13',
             '# first',
-            'ok 1 first test',
-            'ok 2 t not ended',
-            'ok 3 t has progeny',
             '# second',
-            'ok 4 second test',
+            'ok 1 second test',
+            'ok 2 first test',
+            'ok 3 t not ended',
+            'ok 4 t has run progeny',
             '# third',
             'ok 5 third test',
             '',
@@ -79,7 +80,7 @@ tap.test('plan vs end: end', function (tt) {
       setTimeout(function () {
         t.ok(1, 'first test');
         t.ok(!t.ended, 't not ended');
-        t.ok(t._progeny.length, 't has progeny');
+        t.ok(!t._progeny.length, 't has run progeny');
         t.end();
       }, 200);
 
